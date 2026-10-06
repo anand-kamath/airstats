@@ -1,0 +1,13 @@
+version: 2
+sources:
+  - name: raw
+    database: airstats
+    schema: raw
+    tables:
+      - name: airports
+        description: "contains the airports data across the world"
+      - name: airport_comments
+        description: "contains the additional information about the airports"
+      - name: runways
+        description: "runways associated with each airport"
+    
