@@ -1,7 +1,7 @@
 
 {{
   config(
-    materialized = 'ephemeral',
+    materialized = 'table',
     )
 }}
 with sources as 
