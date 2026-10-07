@@ -1,0 +1,122 @@
+version: 2
+
+models:
+  - name: mart_airport_summary
+
+    description: >
+      Gold-layer airport data product containing one record per airport.
+      The model combines airport information with aggregated runway and
+      airport-comment metrics to provide an analytics-ready dataset for
+      reporting and BI consumption.
+
+    config:
+      contract:
+        enforced: true
+
+    columns:
+
+      - name: airport_ident
+        description: >
+          Unique identifier used to identify the airport across the
+          Airtstats datasets.
+        data_type: varchar
+        data_tests:
+          - not_null
+          - unique
+
+      - name: airport_name
+        description: >
+          Official name of the airport.
+        data_type: varchar
+        data_tests:
+          - not_null
+
+      - name: airport_lat
+        description: >
+          Latitude coordinate of the airport.
+        data_type: float
+
+      - name: airport_long
+        description: >
+          Longitude coordinate of the airport.
+        data_type: float
+
+      - name: airport_type
+        description: >
+          Classification of the airport, such as large_airport,
+          medium_airport, small_airport, heliport, or other airport types.
+        data_type: varchar
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - large_airport
+                  - medium_airport
+                  - small_airport
+                  - heliport
+                  - seaplane_base
+                  - balloonport
+                  - closed
+                  - balloonport
+                  - other
+
+      - name: iso_country
+        description: >
+          ISO country code representing the country in which the airport
+          is located.
+        data_type: varchar
+        data_tests:
+          - not_null
+
+      - name: iso_region
+        description: >
+          ISO region code representing the administrative region in which
+          the airport is located.
+        data_type: varchar
+
+      - name: runway_count
+        description: >
+          Total number of runways associated with the airport.
+        data_type: number
+        data_tests:
+          - not_null
+
+      - name: total_runway_length_ft
+        description: >
+          Sum of the lengths of all runways associated with the airport,
+          measured in feet.
+        data_type: number
+
+      - name: max_runway_length_ft
+        description: >
+          Length in feet of the longest runway associated with the airport.
+        data_type: number
+
+      - name: avg_runway_width_ft
+        description: >
+          Average runway width in feet for the airport.
+        data_type: numeric
+
+      - name: comment_count
+        description: >
+          Total number of comments associated with the airport.
+        data_type: number
+        data_tests:
+          - not_null
+
+      - name: has_runways
+        description: >
+          Boolean indicator showing whether the airport has at least one
+          associated runway.
+        data_type: boolean
+        data_tests:
+          - not_null
+
+      - name: has_comments
+        description: >
+          Boolean indicator showing whether the airport has at least one
+          associated comment.
+        data_type: boolean
+        data_tests:
+          - not_null
