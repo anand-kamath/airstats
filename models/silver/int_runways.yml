@@ -12,9 +12,18 @@ models:
       - name: airport_ident
         description: "identifier of the airport"
         data_type: string
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('int_airports')
+                field: airport_ident
+              config:
+                severity: warn
       - name: runway_length_ft
         description: "length of the runway"
         data_type: numeric
+        data_tests:
+          - is_positive
       - name: runway_surface
         description: "surface type of the runway"
         data_type: string

@@ -9,6 +9,16 @@ models:
         data_tests:
           - not_null
           - unique
+      - name: airport_ident
+        description: "{{doc('airport_ident')}}"
+        data_type: string
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('int_airports')
+                field: airport_ident
+              config:
+                severity: warn
       - name: comment_timestamp
         description: "timestamp at which the comment was provided"
         data_type: timestamp

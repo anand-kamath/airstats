@@ -12,9 +12,17 @@ models:
       - name: airport_type
         description: "type of airport"
         data_type: string
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['heliport','small_airport','closed','seaplane_base','balloonport','medium_airport','large_airport']
       - name: airport_name
         description: "name of the airport"
         data_type: string
+        data_tests:
+          - dbt_expectations.expect_column_distinct_count_to_be_greater_than:
+              arguments:
+                value: 10
       - name: airport_lat
         description: "latitude of the airport"
         data_type: numeric
