@@ -1,3 +1,8 @@
+{{
+  config(
+    materialized = 'ephemeral',
+    )
+}}
 with sources as 
 (select * from {{ source('raw', 'airports') }}
 )

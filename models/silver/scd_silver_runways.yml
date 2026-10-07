@@ -1,0 +1,9 @@
+version: 2
+snapshots:
+  - name: scd_int_runways
+    relation: ref('stg_runways')
+    config:
+      strategy: check
+      unique_key: runway_id
+      check_cols: ["airport_ident","runway_length_ft","runway_width_ft","runway_surface","runway_lighted","runway_closed"]
+      dbt_valid_to_current: "to_date('9999-12-31')"

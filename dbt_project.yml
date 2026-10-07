@@ -17,6 +17,7 @@ test-paths: ["tests"]
 seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
+docs-paths: ["docs"]
 
 clean-targets:         # directories to be removed by `dbt clean`
   - "target"
@@ -24,6 +25,6 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 models:
   airstats:
-    staging:
-      +materialized: view
-      
+    silver:
+      +materialized: table
+    

@@ -1,0 +1,35 @@
+version: 2
+models:
+  - name: int_runways
+    description: "This has the details about the runways of each airport"
+    columns:
+      - name: runway_id
+        description: "unique id for the runway"
+        data_type: integer
+        data_tests:
+          - not_null
+          - unique
+      - name: airport_ident
+        description: "identifier of the airport"
+        data_type: string
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('int_airports')
+                field: airport_ident
+              config:
+                severity: warn
+      - name: runway_length_ft
+        description: "length of the runway"
+        data_type: numeric
+        data_tests:
+          - is_positive
+      - name: runway_surface
+        description: "surface type of the runway"
+        data_type: string
+      - name: runway_lighted
+        description: "is the runway lighted or not"
+        data_type: boolean
+      - name: runway_closed
+        description: "runway closed or not"
+        data_type: boolean

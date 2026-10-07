@@ -1,0 +1,9 @@
+version: 2
+snapshots:
+  - name: scd_int_airports
+    relation: ref('stg_airports')
+    config:
+      strategy: check
+      unique_key: airport_ident
+      check_cols: ["airport_type","airport_name","airport_lat","airport_long","continent","iso_country","iso_region"]
+      dbt_valid_to_current: "to_date('9999-12-31')"
