@@ -1,0 +1,32 @@
+version: 2
+models:
+  - name: int_airports
+    description: "This has the details about the airports"
+    columns:
+      - name: airport_ident
+        description: "unique id for the airport"
+        data_type: string
+        data_tests:
+          - not_null
+          - unique
+      - name: airport_type
+        description: "type of airport"
+        data_type: string
+      - name: airport_name
+        description: "name of the airport"
+        data_type: string
+      - name: airport_lat
+        description: "latitude of the airport"
+        data_type: numeric
+      - name: airport_long
+        description: "longitude of the airport"
+        data_type: numeric
+      - name: continent
+        description: "continent in which the airport belongs to"
+        data_type: string
+      - name: iso_country
+        description: "country in which the airport belongs to"
+        data_type: string
+      - name: iso_region
+        description: "region in which the airport belongs to"
+        data_type: string

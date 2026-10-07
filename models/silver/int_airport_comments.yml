@@ -1,0 +1,26 @@
+version: 2
+models:
+  - name: int_airport_comments
+    description: "This has the comments about the airports"
+    columns:
+      - name: comment_id
+        description: "unique id for the airport comments"
+        data_type: integer
+        data_tests:
+          - not_null
+          - unique
+      - name: comment_timestamp
+        description: "timestamp at which the comment was provided"
+        data_type: timestamp
+      - name: member_nickname
+        description: "nickname of the person who commented"
+        data_type: string
+      - name: comment_subject
+        description: "high level description of the comment"
+        data_type: string
+      - name: comment_body
+        description: "the actual comment provided"
+        data_type: string
+      - name: loaded_at
+        description: "the actual timestamp at which the comment was loaded"
+        data_type: timestamp
