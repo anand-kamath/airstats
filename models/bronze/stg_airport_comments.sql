@@ -1,11 +1,11 @@
 
 {{
   config(
-    materialized = 'table',
+    materialized = 'ephemeral',
     )
 }}
 with sources as 
-(select * from {{ source('raw', 'airport_comments') }}
+(select * from  {{ source('raw', 'airport_comments') }}
 )
 select 
   id as comment_id,

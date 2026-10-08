@@ -1,54 +1,77 @@
 {{ config(
-    materialized='table'
+    materialized = 'table'
 ) }}
 
-WITH airport_summary AS (
+WITH runway_summary AS (
 
     SELECT
-        a.airport_ident,
-        a.airport_name,
-        a.airport_lat,
-        a.airport_long,
-        a.airport_type,
-        a.iso_country,
-        a.iso_region,
+        airport_ident,
 
-        -- Runway metrics
-        COUNT(DISTINCT r.runway_id) AS runway_count,
-        SUM(r.runway_length_ft) AS total_runway_length_ft,
-        MAX(r.runway_length_ft) AS max_runway_length_ft,
-        AVG(r.runway_width_ft) AS avg_runway_width_ft,
+        COUNT(DISTINCT runway_id) AS runway_count,
 
-        -- Comment metrics
-        COUNT(DISTINCT c.comment_id) AS comment_count,
+        SUM(runway_length_ft) AS total_runway_length_ft,
 
-        CASE
-            WHEN COUNT(DISTINCT r.runway_id) > 0 THEN TRUE
-            ELSE FALSE
-        END AS has_runways,
+        MAX(runway_length_ft) AS max_runway_length_ft,
 
-        CASE
-            WHEN COUNT(DISTINCT c.comment_id) > 0 THEN TRUE
-            ELSE FALSE
-        END AS has_comments
+        AVG(runway_width_ft) AS avg_runway_width_ft
 
-    FROM {{ ref('stg_airports') }} a
+    FROM {{ ref('int_runways') }}
 
-    LEFT JOIN {{ ref('stg_runways') }} r
-        ON a.airport_ident = r.airport_ident
+    GROUP BY airport_ident
 
-    LEFT JOIN {{ ref('stg_airport_comments') }} c
-        ON a.airport_ident = c.airport_ident
+),
 
-    GROUP BY
-        a.airport_ident,
-        a.airport_name,
-        a.airport_lat,
-        a.airport_long,
-        a.airport_type,
-        a.iso_country,
-        a.iso_region
+comment_summary AS (
+
+    SELECT
+        airport_ident,
+
+        COUNT(DISTINCT comment_id) AS comment_count
+
+    FROM {{ ref('int_airport_comments') }}
+
+    GROUP BY airport_ident
+
 )
 
-SELECT *
-FROM airport_summary
+SELECT
+
+    -- Airport attributes
+    a.airport_ident,
+    a.airport_name,
+    a.airport_lat,
+    a.airport_long,
+    a.airport_type,
+    a.continent,
+    a.iso_country,
+    a.iso_region,
+
+    -- Runway metrics
+    COALESCE(r.runway_count, 0) AS runway_count,
+    COALESCE(r.total_runway_length_ft, 0) AS total_runway_length_ft,
+    r.max_runway_length_ft,
+    r.avg_runway_width_ft,
+
+    -- Comment metrics
+    COALESCE(c.comment_count, 0) AS comment_count,
+
+    -- Indicators
+    CASE
+        WHEN COALESCE(r.runway_count, 0) > 0
+            THEN TRUE
+        ELSE FALSE
+    END AS has_runways,
+
+    CASE
+        WHEN COALESCE(c.comment_count, 0) > 0
+            THEN TRUE
+        ELSE FALSE
+    END AS has_comments
+
+FROM {{ ref('int_airports') }} a
+
+LEFT JOIN runway_summary r
+    ON a.airport_ident = r.airport_ident
+
+LEFT JOIN comment_summary c
+    ON a.airport_ident = c.airport_ident
