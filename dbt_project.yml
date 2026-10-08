@@ -27,4 +27,6 @@ models:
   airstats:
     silver:
       +materialized: table
+    bronze:
+      +materialized: table
     

@@ -61,6 +61,14 @@ models:
                   - balloonport
                   - other
 
+      - name: continent
+        description: >
+          continent representing the country in which the airport
+          is located.
+        data_type: varchar
+        data_tests:
+          - not_null
+
       - name: iso_country
         description: >
           ISO country code representing the country in which the airport
